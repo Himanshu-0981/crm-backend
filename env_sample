@@ -1,0 +1,4 @@
+//  Replace them with actual MongoDB URI and port before deployment.
+
+MONGODB_URI=""
+PORT=""
