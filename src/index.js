@@ -8,6 +8,7 @@ const ENV_CONFIG = require("./config/env_config");
 const userRouter = require("./routers/router.user");
 const mangeMasterRouter = require("./routers/manageMaster");
 const manageLeads = require("./routers/manageLeads");
+const manageProducts = require("./routers/manageProducts");
 
 const app = express();
 const BASE_URI = "/api/v1/";
@@ -25,6 +26,9 @@ app.use(`${BASE_URI}manage-master`, mangeMasterRouter);
 
 // ## Manage Leads Route
 app.use(`${BASE_URI}manage-leads`, manageLeads);
+
+// ## Manage Products Route
+app.use(`${BASE_URI}manage-products`, manageProducts);
 
 // listening to port
 app.listen(PORT, () => console.info(` http://localhost:${PORT}`));
