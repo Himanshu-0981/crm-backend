@@ -6,6 +6,7 @@ const {
 
 const router = app.Router();
 
+// users
 router.post("/signup", handleUserSignUp);
 router.post("/login", handleUserLogin);
 
