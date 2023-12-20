@@ -10,6 +10,11 @@ const {
   handleStateList,
   handleUpdateState,
 } = require("../../controllers/manageMasters/controller.state");
+const {
+  handleManageBranch,
+  handleBranchList,
+  handleUpdateBranch,
+} = require("../../controllers/manageMasters/controller.branch");
 
 const router = app.Router();
 
@@ -34,5 +39,15 @@ router.get("/state-list", handleStateList);
 
 // update state
 router.patch("/update-state/:id", userAuthentication, handleUpdateState);
+
+// !## BRANCH
+// manage branch
+router.post("/manage-branch", userAuthentication, handleManageBranch);
+
+// get branch list
+router.get("/branch-list", handleBranchList);
+
+// update branch
+router.patch("/update-branch/:id", userAuthentication, handleUpdateBranch);
 
 module.exports = router;
