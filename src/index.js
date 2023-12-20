@@ -1,14 +1,21 @@
 require("dotenv").config();
+require("./database");
+
+const cors = require("cors");
 
 const express = require("express");
-const { env_config } = require("./config/env_config");
+const ENV_CONFIG = require("./config/env_config");
+const userRouter = require("./routers/router.user");
 
 const app = express();
-const PORT = env_config.PORT || 3000;
+const PORT = ENV_CONFIG.PORT || 8080; // incase env port not working 8080 is default port
 
-app.get("/", (req, res) => res.send({ message: "hi" }));
+// app level middleware
+app.use(cors());
+app.use(express.json());
+
+// user route
+app.use("/api/v1/user", userRouter);
 
 // listening to port
-app.listen(PORT, () =>
-  console.info(`server is running http://localhost:${PORT}`)
-);
+app.listen(PORT, () => console.info(` http://localhost:${PORT}`));
