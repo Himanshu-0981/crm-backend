@@ -15,6 +15,11 @@ const {
   handleBranchList,
   handleUpdateBranch,
 } = require("../../controllers/manageMasters/controller.branch");
+const {
+  handleManageDesignation,
+  handleDesignationList,
+  handleUpdateDesignation,
+} = require("../../controllers/manageMasters/controller.designation");
 
 const router = app.Router();
 
@@ -49,5 +54,19 @@ router.get("/branch-list", handleBranchList);
 
 // update branch
 router.patch("/update-branch/:id", userAuthentication, handleUpdateBranch);
+
+// !## DESIGNATION
+// manage designation
+router.post("/manage-designation", userAuthentication, handleManageDesignation);
+
+// get designation list
+router.get("/designation-list", handleDesignationList);
+
+// update branch
+router.patch(
+  "/update-designation/:id",
+  userAuthentication,
+  handleUpdateDesignation
+);
 
 module.exports = router;
