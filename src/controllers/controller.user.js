@@ -1,12 +1,13 @@
 const jwt = require("jsonwebtoken");
 
 const userModel = require("../models/model.user");
+const otpModel = require("../models/model.otp");
 const sendError = require("../utils/util.error");
 const hash = require("../utils/util.hash");
 const sendResponse = require("../utils/util.response");
 const jwtSecretKey = require("../config/env_config").JWT_SECRET_KEY;
 const compare = require("../utils/util.compare");
-// const sendVerifyMail = require("../utils/util.sendVerifyMail");
+const sendVerifyMail = require("../utils/util.sendVerifyMail");
 
 const handleUserSignUp = async (req, res) => {
   const { name, email, phone, address, password, confirmPassword } = req.body;
@@ -33,9 +34,9 @@ const handleUserSignUp = async (req, res) => {
             expiresIn: "5d",
           });
 
-          // if (userData) {
-          //   sendVerifyMail(req?.body?.name, req?.body?.email, userData?._id);
-          // }
+          if (userData) {
+            sendVerifyMail(req?.body?.name, req?.body?.email, userData?._id);
+          }
 
           sendResponse(res, 201, true, "User signup successfully", {
             token,
@@ -101,4 +102,18 @@ const handleUserLogin = async (req, res) => {
   }
 };
 
-module.exports = { handleUserSignUp, handleUserLogin };
+const handleVerifyOTP = async (req, res) => {
+  const { userId, enteredOTP } = req.body;
+  try {
+    const storedOTP = await otpModel.findOne({ userId });
+    if (storedOTP && enteredOTP === storedOTP.OTP) {
+      sendResponse(res, 200, true, "OTP verification successful");
+    } else {
+      sendResponse(res, 400, false, "Invalid OTP. Verification failed");
+    }
+  } catch (error) {
+    console.error("Error verifying OTP:", error.message);
+    sendError(res, "Internal Server Error");
+  }
+};
+module.exports = { handleUserSignUp, handleUserLogin, handleVerifyOTP };

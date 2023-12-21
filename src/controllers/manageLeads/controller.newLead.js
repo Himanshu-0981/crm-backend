@@ -1,4 +1,4 @@
-const newLeadsSchema = require("../../models/manageLeads/model.newLeads");
+const newLeadsModel = require("../../models/manageLeads/model.newLeads");
 const sendError = require("../../utils/util.error");
 const sendResponse = require("../../utils/util.response");
 
@@ -18,7 +18,7 @@ const handleNewLeads = async (req, res) => {
 
   try {
     if (firstName && email && phone && gender && leadSource) {
-      const newLeads = new newLeadsSchema({
+      const newLeads = new newLeadsModel({
         firstName,
         lastName,
         email,
@@ -42,4 +42,18 @@ const handleNewLeads = async (req, res) => {
   }
 };
 
-module.exports = { handleNewLeads };
+const handleLeadList = async (req, res) => {
+  try {
+    const leadList = await newLeadsModel.find({});
+    if (leadList) {
+      sendResponse(res, 200, true, "Got Data successfully", leadList);
+    } else {
+      sendResponse(res, 404, false, "Error while getting lead lists");
+    }
+  } catch (err) {
+    console.log(err.message);
+    sendError(res, err);
+  }
+};
+
+module.exports = { handleNewLeads, handleLeadList };
